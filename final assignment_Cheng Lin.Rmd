@@ -1,0 +1,733 @@
+---
+title: 'Win the Election: Is the Mass Polarization a Myth?'
+author: "Cheng Lin"
+date: "01/03/2019"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+New Zealand got hung parliament in 2017. The New Zealand National Party, as a center-right party, got 44.4% of votes in 2017 election. However, the Labor Party, as a center-left party, formed a coalition government with the New Zealand First Party that is a national and populist political party, to maintain the confidence of the House. In Hungary, Fidesz and its satellite ally KDNP, as center-right parties, achieved the majority for the third consecutive time with 49.3% of votes in 2018 election.
+
+Based on the real political environment, the main task in this article is to repurpose the Moral Machine data to consider political outcomes in New Zealand and Hungary. Therefore, first, I will use Moral Machine data to construct "saved" models for New Zealand and Hungary. Second, I will use the coefficients from "saved" models and counterfactual data from parties' policies to predict what party will win. Monte Carlo simulation is used to reduce data uncertainty within counterfactual data. Third, I will discuss if clear mass polarization does exist in New Zealand and Hungary. 
+
+
+# Literature Review and Hypotheses
+In this article, I loosely define "Law and Order Party" as a center-right party and define "Free Markets Party", "Social Welfare Party" and "Feminist Party" as center-left parties. It should be noted that these political parties' assumptions are very limited. In the real world, parties will combine different policies to attract voters. Far-right or far-left parties are hard to win the election. "Free markets" is a basic principle in many western countries. New Zealand and Hungary are considered as democratic countries with free-market capitalism. Therefore, the Free Markets Party will be an important choice in New Zealand and Hungary.
+
+In New Zealand, the National Party and the Labour Party are two main parties. One of the election promises of the National Party in 2017 is to focus more on economic stability. What is more, the National Party prefers to construct a limited welfare state. However, one of the election promises of the Labour Party is to improve social welfare, especially about education. Welfare policies are shaped by path-dependency (Kiess et al., 2017). Every party in New Zealand have to focus on social welfare more or less if they want to secure seats. Social welfare reduction may lead to election defeat. In Hungary, the Fidesz Party thirdly won the national parliamentary election. Furthermore, the Fidesz adopts anti-immigration and free markets stances. Hungary needs free markets to improve economic growth. Based on these political realities, I will assume that people prefer to choose the Free Markets Party in Hungary. Therefore, my hypotheses are:
+
+H1: In New Zealand, the Free Markets Party will get the highest votes, but the Social Welfare Party will get second highest votes.
+
+H2: In Hungary, the Free Markets Party will get the highest votes. 
+
+	Furthermore, as noted by Gentzkow (2016), political polarization in the American public is increasing from 2004 to 2014. In this article, we focus on mass polarization as a state (Lelkes, 2016). What is more, polarization is defined as "alignment, which refers to the degree to which party identity increasingly matches ideology" (Lelkes, 2016). In modern society, populism and far-right or far-left parties seem to become more and more popular. Therefore, our third hypothesis is below:
+	
+H3: In New Zealand and Hungary, clear mass polarization does exist.
+
+
+# Data and Methodology
+## 1.Data and Measurement
+The data used in "Saved" models are from the Moral Machine project at MIT. I will separately construct two "Saved" models based on New Zealand and Hungary dataset. They are panel datasets. In New Zealand and Hungary datasets, one row means one alternative. There are 22062 alternatives in New Zealand dataset, but only 978 individuals. In the Hungary dataset, there are 22410 alternatives, but only 999 individuals. There are two important steps in data manipulation. First, I drop put all alternatives without pair. Second, I use "UserID" as individuals' label. Some respondents in Moral Machine project attended this survey more than once, and I will define them as the same person to reduce noise.
+
+In the "Saved" model, the dependent variable is "saved". In Moral Machine project, "Saved (Yes=1, No=0)" means that the chosen alternative will be saved and marked as 1 in each scenario. Alternative-level covariates include business persons, obese persons, man, woman, pregnant woman, criminals, male or female crossing signal violators, stroller, passengers, pedestrians, and homeless. These alternative level covariates indicate saving the number of specific persons. However, passengers (yes=1, no=0), pedestrians (yes=1, no=0), and crossing signal violators (yes=1, no=0) do not indicate numbers. I will construct six new variables, "Man Passengers", "Woman Passengers", "Man Pedestrians", "Woman Pedestrians", "Man Crossing Signal violators " and "Woman Crossing Signal violators" to indicate the number of "Passengers who are men or women", "Pedestrians who are men or women" and "Crossing signal violators who are men or women". Now, all alternative-level covariates have the same unit. In the Moral Machine project, we cannot get the number of business persons and the number of obese persons directly. Therefore, I will use "Male Executive+ Female Executive" to create a new variable to indicate business persons. What is more, I will use "Large Man + Large Woman" to create a new variable to indicate obese persons. Individual-level covariates include reviewers' political views (from 0 to 1 with being from strongly conservative to strongly progressive). 
+## 2.Methods
+First, I will use the multinomial logit model (MNL) to construct two "Saved" models based on New Zealand and Hungary dataset to explore data. However, there is a crucial drawback of MNL, which lacks the flexibility to allow the preference heterogeneity (Sarrias et al., 2017). In this dataset, assuming preference homogeneity is not reasonable. LCM can be used to represent unobserved preference heterogeneity (Sarrias et al., 2017). LCM assumes preference homogeneity holds within segments, but heterogeneity varies across classes. The advantage of LCM is "relatively simple, reasonably plausible and statistically testable" (Shen, 2009). In this article, I want to test if mass polarization does exist in New Zealand and Hungary. Using LCM can help me detect classifications within respondents. 
+
+Second, to reduce uncertainty within counterfactual data (parties' policies), I will use the Monte Carlo method to simulate counterfactual data (100 times). Based on simulated counterfactual data and the coefficients from "Saved" models, I will predict the political outcomes for New Zealand and Hungary. I will use the mean of 100 different predicted market shares to indicate political outcomes. 
+
+Third, I will graph political outcomes within classes to test whether clear mass polarization does exist or not. First, according to the LCM's results, we can access the predicted class memberships for individuals. Second, I will directly use reviewers' political views and political outcomes to test mass polarization. 
+
+
+# Results
+## 1.Multinomial Logit Model
+Results of multinomial logit models for New Zealand and Hungary can be found in table 1. The model in Column 2 indicates that New Zealand respondents have positive and significant (p<0.001) preferences to save business persons, homeless, men, women, pregnant women, infant (stroller), criminals male crossing signal violators, female crossing signal violators. In particular, all other covariates held constant, New Zealand respondents obtained 0.194 utility points (p<0.001) for each additional male life saved and 0.226 utility points (p<0.001) for each female life saved.
+
+What is more, the model in Colum 3 indicates Hungarian respondents' saving preferences. The estimated coefficients of logistic regressions between two different models cannot be compared directly (Mood, 2010), but we can find these two models seem to present a similar preference tendency. However, the coefficient of saving obese persons in Hungarian "Saved" model is negative and slightly significant (p<0.1). 
+
+```{r cars, warning=TRUE, include=FALSE}
+library(ggplot2)
+library(mlogit)
+library(gmnl)
+library(data.table)
+library(stargazer)
+library(grid)
+library(car)
+options(digits=3)
+```
+
+```{r pressure, include=FALSE}
+# New Zealand dataset
+NZL <- fread("C:/Users/lc881/Desktop/final assignment/SampleSharedResponsesNZL.csv")
+setnames(NZL,"Barrier","Passengers")
+NZL1 <- NZL[,-c("Intervention","Boy","Girl","FemaleAthlete","MaleAthlete","FemaleDoctor","MaleDoctor","Dog","Cat",
+                "OldMan","OldWoman")]
+
+NZL1$Businessp <- NZL1$MaleExecutive+NZL1$FemaleExecutive
+NZL1$Obesep <- NZL1$LargeWoman+NZL1$LargeMan
+NZL1 <- NZL1[,-c("LargeWoman","LargeMan","MaleExecutive","FemaleExecutive")]
+NZL2 <- NZL1[,N:=.N,by=.(ResponseID)]
+NZL2 <- NZL2[N!=1,]
+
+for (i in 1:nrow(NZL2)) {
+  # PedPed
+  if(NZL2$PedPed[i]==1 & NZL2$Man[i]!=0){
+    NZL2$Mped[i] <- NZL2$Man[i]
+  }else{
+    NZL2$Mped[i] <- 0
+  }
+  if(NZL2$PedPed[i]==1 & NZL2$Woman[i]!=0){
+    NZL2$Feped[i] <- NZL2$Woman[i]
+  }else{
+    NZL2$Feped[i] <- 0
+  }
+  #Passengers
+  if(NZL2$Passengers[i]==1 & NZL2$Man[i]!=0){
+    NZL2$Mpassengers[i] <- NZL2$Man[i]
+  }else{
+    NZL2$Mpassengers[i] <- 0
+  }
+  if(NZL2$Passengers[i]==1 & NZL2$Woman[i]!=0){
+    NZL2$Fepassengers[i] <- NZL2$Woman[i]
+  }else{
+    NZL2$Fepassengers[i] <- 0}
+  
+  #Crossingsign
+  if(NZL2$CrossingSignal[i]==1 & NZL2$Man[i]!=0){
+    NZL2$Mcro[i] <- NZL2$Man[i]
+  }else{
+    NZL2$Mcro[i] <- 0
+  }
+  if(NZL2$CrossingSignal[i]==1 & NZL2$Woman[i]!=0){
+    NZL2$Fecro[i] <- NZL2$Woman[i]
+  }else{
+    NZL2$Fecro[i] <- 0}
+}
+
+# Hungary dataset
+HUN <- fread("C:/Users/lc881/Desktop/final assignment/SampleSharedResponsesHUN.csv")
+setnames(HUN,"Barrier","Passengers")
+HUN1 <- HUN[,-c("Intervention","Boy","Girl","FemaleAthlete","MaleAthlete","FemaleDoctor","MaleDoctor","Dog","Cat",
+                "OldMan","OldWoman")]
+HUN1$Businessp <- HUN1$MaleExecutive+HUN1$FemaleExecutive
+HUN1$Obesep <- HUN1$LargeWoman+HUN1$LargeMan
+HUN1 <- HUN1[,-c("LargeWoman","LargeMan","MaleExecutive","FemaleExecutive")]
+HUN2 <- HUN1[,N:=.N,by=.(ResponseID)]
+HUN2 <- HUN2[N!=1,]
+
+for (i in 1:nrow(HUN2)) {
+  # PedPed
+  if(HUN2$PedPed[i]==1 & HUN2$Man[i]!=0){
+    HUN2$Mped[i] <- HUN2$Man[i]
+  }else{
+    HUN2$Mped[i] <- 0
+  }
+  if(HUN2$PedPed[i]==1 & HUN2$Woman[i]!=0){
+    HUN2$Feped[i] <- HUN2$Woman[i]
+  }else{
+    HUN2$Feped[i] <- 0
+  }
+  #Passengers
+  if(HUN2$Passengers[i]==1 & HUN2$Man[i]!=0){
+    HUN2$Mpassengers[i] <- HUN2$Man[i]
+  }else{
+    HUN2$Mpassengers[i] <- 0
+  }
+  if(HUN2$Passengers[i]==1 & HUN2$Woman[i]!=0){
+    HUN2$Fepassengers[i] <- HUN2$Woman[i]
+  }else{
+    HUN2$Fepassengers[i] <- 0}
+  
+  #Crossingsign
+  if(HUN2$CrossingSignal[i]==1 & HUN2$Man[i]!=0){
+    HUN2$Mcro[i] <- HUN2$Man[i]
+  }else{
+    HUN2$Mcro[i] <- 0
+  }
+  if(HUN2$CrossingSignal[i]==1 & HUN2$Woman[i]!=0){
+    HUN2$Fecro[i] <- HUN2$Woman[i]
+  }else{
+    HUN2$Fecro[i] <- 0}
+}
+
+
+# individual political views in New Zealand
+NZLpoli <- c()
+NZLID <- unique(NZL2$UserID)
+for (a in 1:length(NZLID)) {
+  NZLpoli[a] <-unique(NZL2[UserID==paste(NZLID[a])]$Review_political)[1]
+}
+NZLpoli<- data.table(NZLpoli)
+
+# individual political views in Hungary
+HUNpoli <- c()
+HUNID <- unique(HUN2$UserID)
+for (b in 1:length(HUNID)) {
+  HUNpoli[b] <-unique(HUN2[UserID==paste(HUNID[b])]$Review_political)[1]
+}
+HUNpoli<- data.table(HUNpoli)
+```
+
+```{r echo=FALSE}
+#MNL
+m1 <- mlogit(Saved ~ Businessp+Homeless+Man+Woman+Pregnant+
+               Stroller+Obesep+Criminal+Mcro+Fecro+Mped+Feped+Mpassengers+Fepassengers+0|0,
+             data=NZL2,
+             alt.var="LeftHand",
+             chid.var="ResponseID",
+             choice="Saved")
+m2 <- mlogit(Saved ~ Businessp+Homeless+Man+Woman+Pregnant+
+               Stroller+Obesep+Criminal+Mcro+Fecro+Mped+Feped+Mpassengers+Fepassengers+0|0,
+             data=HUN2,
+             alt.var="LeftHand",
+             chid.var="ResponseID",
+             choice="Saved")
+
+stargazer(m1,m2,type = "text",
+          label="tab:Table 1",
+          column.labels = c("NZL","HUN"),
+          covariate.labels= c("Businessp","Homeless", "Man", "Woman", 
+                              "PregnantWo", "Stroller", 
+                              "Obese",
+                              "Criminal",
+                              "Man Cro",
+                              "Woman Cro",
+                              "Man Pedestrians",
+                              "Woman Pedestrians",
+                              "Man Pas",
+                              "WomanPas"),
+          title = "Table 1: MNL models of Moral Machine Choices, New Zealand and Hungary",
+          keep.stat=c("n","ll"),
+          header=FALSE,
+          align = TRUE
+          )
+
+```
+
+We can use MNL to predict the saving preferences preliminarily, but the results are unrealistic. As noted above, MNL assumes that the individuals' preferences are homogenous, but the real world does not work like this. For real voting behaviors, people might follow similar voting preferences within the same groups. LCM can be used to relax the homogeneity assumption and find latent classes within our samples. What is more, likelihood ratio tests between MNL and LCM in New Zealand and Hungary are both significant(p<0.001). Therefore, we use LCM to construct our models. 
+
+## 2.Latent class models
+According to BICs, a fitting index, we can find the 2-classes model for New Zealand is reasonable, and 3-classes model for Hungary is plausible. These two models got successful convergence and have lower BICs. Table 2 shows the coefficient estimations for two LCM of New Zealand and Hungary separately. 
+
+In NZL's "Saved" model, first, respondents in both classes have a positive and significant tendency (p<0.001) to save business persons, Pregnant Women, Infant, and Homeless, criminals, male crossing signal violators, female crossing signal violators, all other covariates held constant. Second, in Class 1, all other covariates held constant, preference difference (the difference between coefficients) between business persons and homeless is significant (p<0.05). What is more, In Class 1 people may prefer to save passengers (p<0.01) compared to saving pedestrians. Third, compared to Class 1, respondents in Class 2 have a stronger preference to save men and women. In particular, the coefficient of women in Class 2 indicates that respondents obtained 1.230 utility points (p<0.001) for each male life saved, all other covariates held constant. What is more, respondents in Class 2 only obtained 0.988 utility points (p<0.001) for each male life saved, all other covariates held constant. However, the preference difference between gender in Class 2 is insignificant. Fourth, respondents in Class 2 may prefer to save pedestrians (P<0.05)  compared to saving passengers. Furthermore, the preference difference between business persons and homeless is insignificant. Respondents in Class 2 may not care about social status and gender difference.
+
+```{r include=FALSE}
+# LCM
+bicExtract<-function(x) {
+  cbind.data.frame(Classes=1:length(x), 
+                   BIC=unlist(lapply(x,BIC)) , 
+                   convergence=unlist(lapply(x,function(x) x$logLik$message)))
+}
+# Saved model for New Zealand
+sample.NZL<-mlogit.data(data=NZL2,alt.var="LeftHand",chid.var="ResponseID",id.var = "UserID",
+                           choice="Saved")
+
+#set up a vector to store results
+NZL.models<-vector(mode="list",length=5)
+#
+NZL.models[[1]] <- gmnl(Saved~Businessp+Homeless+Man+Woman+Pregnant+
+               Stroller+Obesep+Criminal+Mcro+Fecro+Mped+Feped+Mpassengers+Fepassengers|0  ,
+            model="mnl",
+            data=sample.NZL
+            )
+
+for(q in 2:5) {
+NZL.models[[q]] <- gmnl(Saved~Businessp+Homeless+Man+Woman+Pregnant+
+               Stroller+Obesep+Criminal+Mcro+Fecro+Mped+Feped+Mpassengers+Fepassengers | 0 | 0 | 0 | 1 ,
+            panel=TRUE,
+            model="lc",
+            data=sample.NZL,
+            Q=q
+            )
+}
+
+NZL.bics<-bicExtract(NZL.models)
+NZL.bics
+ggplot(data=NZL.bics,aes(Classes,BIC))+
+  geom_line()+
+  geom_point(aes(color=convergence))+
+  theme(legend.position="bottom")
+lrtest(m1,NZL.models[[2]])
+```
+
+
+```{r include=FALSE}
+# Saved model for Hungary
+sample.HUN<-mlogit.data(data=HUN2,alt.var="LeftHand",chid.var="ResponseID",id.var = "UserID",
+                           choice="Saved")
+
+#set up a vector to store results
+HUN.models<-vector(mode="list",length=5)
+#
+HUN.models[[1]] <- gmnl(Saved~Businessp+Homeless+Man+Woman+Pregnant+
+               Stroller+Obesep+Criminal+Mcro+Fecro+Mped+Feped+Mpassengers+Fepassengers|0  ,
+            model="mnl",
+            data=sample.HUN
+            )
+
+for(w in 2:5) {
+HUN.models[[w]] <- gmnl(Saved~Businessp+Homeless+Man+Woman+Pregnant+
+               Stroller+Obesep+Criminal+Mcro+Fecro+Mped+Feped+Mpassengers+Fepassengers | 0 | 0 | 0 | 1 ,
+            panel=TRUE,
+            model="lc",
+            data=sample.HUN,
+            Q=w
+            )
+}
+
+HUN.bics<-bicExtract(HUN.models)
+ggplot(data=HUN.bics,aes(Classes,BIC))+
+  geom_line()+
+  geom_point(aes(color=convergence))+
+  theme(legend.position="bottom")
+lrtest(m2,HUN.models[[3]])
+```
+
+## Latent class model for nzl and hun
+```{r include=FALSE}
+# Linear hypothesis test and summary
+summary(NZL.models[[2]])
+linearHypothesis(NZL.models[[2]],c("class.1.Man=class.1.Woman"))
+linearHypothesis(NZL.models[[2]],c("class.2.Man=class.2.Woman"))
+linearHypothesis(NZL.models[[2]],c("class.2.Mped=class.2.Mpassengers"))
+linearHypothesis(NZL.models[[2]],c("class.2.Feped=class.2.Fepassengers"))
+linearHypothesis(NZL.models[[2]],c("class.1.Mped=class.1.Mpassengers"))
+linearHypothesis(NZL.models[[2]],c("class.1.Feped=class.1.Fepassengers"))
+linearHypothesis(NZL.models[[2]],c("class.1.Businessp=class.1.Homeless"))
+linearHypothesis(NZL.models[[2]],c("class.2.Businessp=class.2.Homeless"))
+
+summary(HUN.models[[3]])
+linearHypothesis(HUN.models[[3]],c("class.1.Man=class.1.Woman"))
+linearHypothesis(HUN.models[[3]],c("class.2.Man=class.2.Woman"))
+linearHypothesis(HUN.models[[3]],c("class.3.Man=class.3.Woman"))
+linearHypothesis(HUN.models[[3]],c("class.1.Mped=class.1.Mpassengers"))
+linearHypothesis(HUN.models[[3]],c("class.2.Mped=class.2.Mpassengers"))
+linearHypothesis(HUN.models[[3]],c("class.3.Mped=class.3.Mpassengers"))
+linearHypothesis(HUN.models[[3]],c("class.1.Feped=class.1.Fepassengers"))
+linearHypothesis(HUN.models[[3]],c("class.2.Feped=class.2.Fepassengers"))
+linearHypothesis(HUN.models[[3]],c("class.3.Feped=class.3.Fepassengers"))
+linearHypothesis(HUN.models[[3]],c("class.1.Businessp=class.1.Homeless"))
+linearHypothesis(HUN.models[[3]],c("class.2.Businessp=class.2.Homeless"))
+linearHypothesis(HUN.models[[3]],c("class.3.Businessp=class.3.Homeless"))
+
+```
+
+In the HUN's "Saved" model, first, Hungarian respondents in three classes all have positive and significant preferences (p<0.05) to save business persons, Pregnant Women, Infant. Second, Hungarian respondents in three classes have higher preference division. In particular, respondents in Class 3 prefer to save passengers rather than pedestrians (p<0.01) and save business persons rather than homeless (p<0.05), all other covariates held constant. In class 2, respondents do not care passengers and pedestrians so much, they prefer to save business persons and homeless people, but they think business persons have a higher value than homeless people, all other covariates held constant. Furthermore, respondents in Class 2 prefer to save women rather than men (p<0.05), all other covariates held constant. Fourth, respondents in Class 1 and Class 3, compared to Class 2, prefer to save criminals and crossing signal violators, all other covariates held constant. 
+
+In sum, based on these two models, we have two assumptions about mass polarization. In New Zealand, respondents in Class 2 are more likely to be potential "Social Welfare Party" voters, and respondents in Class 1 are more likely to be potential "Free Markets Party" voters. In Hungary, respondents in Class 3 are more likely to be potential "Free Markets Party" voters, and respondents in Class 1 and Class 2 are more likely to be mixed voters (centrists). It should be noted that these assumptions are very limited because we detect preference differences between some covariates according to different parties' policies. We will test these assumptions in section 4 (Mass polarization)
+
+```{r include=FALSE}
+# Individual level coefficients for NZL
+NZL.betas<-as.data.table(effect.gmnl(NZL.models[[2]])$mean)
+NZL.betas$id <- 1:nrow(NZL.betas)
+# Individual level coefficients for HUN
+HUN.betas<-as.data.table(effect.gmnl(HUN.models[[3]])$mean)
+HUN.betas$id <- 1:nrow(HUN.betas)
+```
+
+## 3.Predicted Memberships and Market Shares
+As noted above, we can predict which class individuals belong to. In here, we assume that the classification errors are acceptable. Therefore, we do not test classification error rates. Table 3 indicates classes in New Zealand and Hungary's models.
+```{r echo=FALSE}
+set.seed(1234)
+# predicted class members for NZL
+Qir.NZL<- NZL.models[[2]]$Qir
+Qir.NZL <- data.table(Qir.NZL)
+NZLclass <- c()
+for (i in 1:nrow(Qir.NZL)) {
+  class <- c("Class 1","Class 2")
+  NZLclass[i] <- sample(class,size=1,prob =Qir.NZL[i])
+}
+NZLclass <- data.table(NZLclass)
+NZL.betas <- cbind(NZL.betas,NZLclass)
+
+# predicted class members for HUN
+Qir.HUN<- HUN.models[[3]]$Qir
+Qir.HUN <- data.table(Qir.HUN)
+HUNclass <- c()
+for (i in 1:nrow(Qir.HUN)) {
+  class <- c("Class 1","Class 2","Class 3")
+  HUNclass[i] <- sample(class,size=1,prob =Qir.HUN[i])
+}
+HUNclass <- data.table(HUNclass)
+HUN.betas <- cbind(HUN.betas,HUNclass)
+
+stargazer(table(NZLclass),table(HUNclass))
+
+```
+
+Figure 1 and Figure 2 indicate some individuals-level coefficients for covariates (Business Persons, Homeless, Men, and Women) in New Zealand's "Saved" model and Hungarian "Saved" model, based on different classes. In figure 1, the effects of business persons, homeless persons, men, and women have standard deviations of 0.036, 0.139, 0.501, and 0.344 respectively in New Zealand's "Saved" model. What is more, in figure 2, the effects of business persons, homeless, men, and women have standard deviations of 0.130, 0.039, 0.368, and 0.472 respectively in Hungarian "Saved" model. The red line in each graph indicates a mean of each coefficient. The bars show the distribution of specific covariates' coefficient at the individual level. We can find that the coefficients' distributions follow the LCM's assumption.
+```{r echo=FALSE}
+# Plot individuals coefficients for NZL
+library(gridExtra)
+NZLP1 <- ggplot(NZL.betas,aes(Businessp,fill=NZLclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Businessp)),color="red", linetype="dashed", size=1)
+NZLP2 <- ggplot(NZL.betas,aes(Homeless,fill=NZLclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Homeless)),color="red", linetype="dashed", size=1)
+NZLP3<- ggplot(NZL.betas,aes(Man,fill=NZLclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Man)),color="red", linetype="dashed", size=1)
+NZLP4 <- ggplot(NZL.betas,aes(Woman,fill=NZLclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Woman)),color="red", linetype="dashed", size=1)
+
+
+# Plot individuals coefficient for HUN
+HUNP1 <- ggplot(HUN.betas,aes(Businessp,fill=HUNclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Businessp)),color="red", linetype="dashed", size=1)
+HUNP2 <- ggplot(HUN.betas,aes(Homeless,fill=HUNclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Homeless)),color="red", linetype="dashed", size=1)
+HUNP3<- ggplot(HUN.betas,aes(Man,fill=HUNclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Man)),color="red", linetype="dashed", size=1)
+HUNP4 <- ggplot(HUN.betas,aes(Woman,fill=HUNclass))+geom_histogram(alpha=.5,position = "identity")+ 
+  geom_vline(aes(xintercept=mean(Woman)),color="red", linetype="dashed", size=1)
+
+
+#Multiplot
+#Credit:https://github.com/tidyverse/ggplot2.wiki.git
+grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
+	plots <- list(...)
+	position <- match.arg(position)
+	g <- ggplotGrob(plots[[1]] + 
+	theme(legend.position = position))$grobs
+	legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+	lheight <- sum(legend$height)
+	lwidth <- sum(legend$width)
+	gl <- lapply(plots, function(x) x +
+	theme(legend.position = "none"))
+	gl <- c(gl, ncol = ncol, nrow = nrow)
+
+	combined <- switch(position,
+	                   "bottom" = arrangeGrob(do.call(arrangeGrob, gl), 
+	                   legend,ncol = 1,
+					heights = unit.c(unit(1, "npc") - lheight, lheight)),
+					"right" = arrangeGrob(do.call(arrangeGrob, gl),
+				  legend, ncol = 2,
+					widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+
+	grid.newpage()
+	grid.draw(combined)
+
+	# return gtable invisibly
+	invisible(combined)
+}
+NZLP1
+grid_arrange_shared_legend(NZLP1,NZLP2,NZLP3,NZLP4,nrow=2,ncol=2)
+grid_arrange_shared_legend(HUNP1,HUNP2,HUNP3,HUNP4,nrow=2,ncol=2)
+
+(NZL.betas <- cbind(NZL.betas,NZLpoli))
+(HUN.betas <- cbind(HUN.betas,HUNpoli))
+
+
+sd(NZL.betas$Businessp)
+sd(NZL.betas$Homeless)
+sd(NZL.betas$Man)
+sd(NZL.betas$Woman)
+
+sd(HUN.betas$Businessp)
+sd(HUN.betas$Homeless)
+sd(HUN.betas$Man)
+sd(HUN.betas$Woman)
+```
+
+Using the estimated results of LCM (Table 2) and simulated counterfactual data, we can now predict the market shares of political outcomes for New Zealand and Hungary. Table 4 shows market shares of political outcomes based on simulated counterfactual data in New Zealand and Hungary. First, the mean of market shares that are based predicted observations are very similar to that of market shares that are based probabilities from LCM because we use Monte Carlo simulation to reduce counterfactual data's uncertainty. However, their standard deviations are still different. Second, the Free Markets Party will win in New Zealand (Observation:35.2% votes; LCM:35.4% Table4), and the Social Welfare Party gets about 29.5% votes (Second highest votes). On the other hand, the Free Markets Party will win in Hungary (Observation:49.6% votes; LCM:49.6% Table4). These results are consistent with the real political realities and confirm H1 and H2. Third, political outcomes between New Zealand and Hungary are similar in this article because they both are capitalist countries and share western culture. 
+
+```{r include=FALSE}
+# Predict market shares for NZL
+set.seed(1234)
+NZL.share <- data.table()
+for (i in 1:100) {
+  NZL.ww <- data.table()
+  for (m in 1:nrow(NZL.betas)) {
+    # Party
+    Businessp <- c(sample(1:2,1),0,-sample(1:2,1),0,0)
+    Pawoman <- c(sample(0:2,1),0,-sample(0:2,1),0,0)
+    ######
+    if (Pawoman[1]==2){
+      Paman <- c(0,0,0,0,0)
+    }else if(Pawoman[1]==0){
+      Paman <- c(sample(1:2,1),0,0,0,0)
+    } else {
+      Paman <- c(sample(0:1,1),0,0,0,0)
+    }
+    if (Pawoman[3]==-2){
+      Paman[3] <- c(0)
+    }else if(Pawoman[3]==0){
+      Paman[3] <- -sample(1:2,1) 
+    } else {
+      Paman[3] <- -sample(0:1,1)
+    }
+    #######
+    Pewoman <- c(-sample(0:2,1),0,0,0,0)
+    if (Pewoman[1]==-2){
+      Peman <- c(0,0,0,0,0)
+    }else if(Pewoman[1]==0){
+      Peman <- c(-sample(1:2,1),0,0,0,0)
+    } else {
+      Peman <- c(-sample(0:1,1),0,0,0,0)
+    }
+    ######
+    Homeless <- c(-sample(2,1),0,sample(0:1,1),-sample(0:1,1),0)
+    Women <- c(0,sample(3,1),sample(2,1),sample(2,1),0)
+    Men <- c(0,-sample(2,1),0,sample(2,1),0)
+    Pregwomen <- c(0,1,0,0,0)
+    Infant <- c(0,-sample(2,1),0,0,0)
+    Obese <- c(0,0,sample(2,1),0,0)
+    criminal <- c(0,0,0,-sample(2,1),0)
+    Vwoman <- c(0,0,0,-sample(0:1,1),0)
+    if(Vwoman[4]==0){
+      Vman <- c(0,0,0,-sample(0:1,1),0)
+    }else{
+      Vman <- c(0,0,0,0,0)
+    }
+    alt <- c("Free Markets Party","Feminist Party","Social Welfare Party","Law and Order Party","Status Quo Party")
+    Cdata <- cbind(alt,Businessp,Homeless,Men,Women,Pregwomen,Infant,Obese,criminal,Vman,Vwoman,Peman,Pewoman,Paman,Pawoman)
+    Cdata <- data.table(Cdata)
+    Cdata$id <- rep(m,5)
+    NZL.ww <- rbind(NZL.ww,Cdata)
+  }
+
+  
+  NZL.ww$Businessp<- as.numeric(NZL.ww$Businessp)
+  NZL.ww$Homeless <- as.numeric(NZL.ww$Homeless)
+  NZL.ww$Men <- as.numeric(NZL.ww$Men)
+  NZL.ww$Women <- as.numeric(NZL.ww$Women)
+  NZL.ww$Pregwomen <- as.numeric(NZL.ww$Pregwomen)
+  NZL.ww$Infant <- as.numeric(NZL.ww$Infant)
+  NZL.ww$Obese <- as.numeric(NZL.ww$Obese)
+  NZL.ww$criminal <- as.numeric(NZL.ww$criminal)
+  NZL.ww$Paman <- as.numeric(NZL.ww$Paman)
+  NZL.ww$Pawoman <- as.numeric(NZL.ww$Pawoman)
+  NZL.ww$Peman <- as.numeric(NZL.ww$Peman)
+  NZL.ww$Pewoman <- as.numeric(NZL.ww$Pewoman)
+  NZL.ww$Vman <- as.numeric(NZL.ww$Vman)
+  NZL.ww$Vwoman <- as.numeric(NZL.ww$Vwoman)
+  ############
+  NZL.ww<-NZL.ww[ NZL.betas, on=.(id)]
+  
+  ##########
+  setkey(NZL.ww,"id","alt")
+  ####################
+  b.names<-17:30
+  
+  # functions for calculating utility and probabilities
+  calcU<-function(dt,formula,names) {
+    U<-rowSums(model.matrix(formula,data=dt)*as.matrix(dt[,..b.names]))
+    return(U)
+  }
+  calcP<-function(x) { 
+    exp(x)/sum(exp(x))
+  }
+  
+  # Calculate utilities, probabilities, and make choices
+  NZL.ww[ , U:=calcU(NZL.ww,~Businessp+Homeless+Men+Women+Pregwomen+Infant+Obese+
+                   criminal+Vman+Vwoman+Peman+Pewoman+Paman+Pawoman-1,..b.names)
+      ][ , p:=calcP(U), by=.(id)
+         ][ , alt.choice:=sample(alt,size=1,prob=p), by=.(id)
+            ][, choice:=as.integer(alt==alt.choice)]
+  
+  NZL.share.p<- NZL.ww[ , .(Share.lc=sum(p), 
+            Share.obs=sum(choice)
+  ) , 
+  by=.(alt)
+  ][ , `:=`(Share.lc=Share.lc/sum(Share.lc),
+            Share.obs=Share.obs/sum(Share.obs)
+  )
+  ][1:5]
+  NZL.share <-rbind(NZL.share.p,NZL.share) 
+}
+# market shares for NZL based on LCM's probabilities
+summary(NZL.share[alt=="Feminist Party"]$Share.lc)
+sd(NZL.share[alt=="Feminist Party"]$Share.lc)
+summary(NZL.share[alt=="Free Markets Party"]$Share.lc)
+sd(NZL.share[alt=="Free Markets Party"]$Share.lc)
+summary(NZL.share[alt=="Law and Order Party"]$Share.lc)
+sd(NZL.share[alt=="Law and Order Party"]$Share.lc)
+summary(NZL.share[alt=="Social Welfare Party"]$Share.lc)
+sd(NZL.share[alt=="Social Welfare Party"]$Share.lc)
+summary(NZL.share[alt=="Status Quo Party"]$Share.lc)
+sd(NZL.share[alt=="Status Quo Party"]$Share.lc)
+
+#market share for NZL based on predicted outcomes
+summary(NZL.share[alt=="Feminist Party"]$Share.obs)
+sd(NZL.share[alt=="Feminist Party"]$Share.obs)
+summary(NZL.share[alt=="Free Markets Party"]$Share.obs)
+sd(NZL.share[alt=="Free Markets Party"]$Share.obs)
+summary(NZL.share[alt=="Law and Order Party"]$Share.obs)
+sd(NZL.share[alt=="Law and Order Party"]$Share.obs)
+summary(NZL.share[alt=="Social Welfare Party"]$Share.obs)
+sd(NZL.share[alt=="Social Welfare Party"]$Share.obs)
+summary(NZL.share[alt=="Status Quo Party"]$Share.obs)
+sd(NZL.share[alt=="Status Quo Party"]$Share.obs)
+
+NZL.share
+```
+
+
+```{r}
+# Predict market shares for HUN
+digits=3
+set.seed(1234)
+HUN.share <- data.table()
+for (i in 1:100) {
+  HUN.ww <- data.table()
+  for (m in 1:nrow(HUN.betas)) {
+    # Party
+    Businessp <- c(sample(1:2,1),0,-sample(1:2,1),0,0)
+    Pawoman <- c(sample(0:2,1),0,-sample(0:2,1),0,0)
+    ######
+    if (Pawoman[1]==2){
+      Paman <- c(0,0,0,0,0)
+    }else if(Pawoman[1]==0){
+      Paman <- c(sample(1:2,1),0,0,0,0)
+    } else {
+      Paman <- c(sample(0:1,1),0,0,0,0)
+    }
+    if (Pawoman[3]==-2){
+      Paman[3] <- c(0)
+    }else if(Pawoman[3]==0){
+      Paman[3] <- -sample(1:2,1) 
+    } else {
+      Paman[3] <- -sample(0:1,1)
+    }
+    #######
+    Pewoman <- c(-sample(0:2,1),0,0,0,0)
+    if (Pewoman[1]==-2){
+      Peman <- c(0,0,0,0,0)
+    }else if(Pewoman[1]==0){
+      Peman <- c(-sample(1:2,1),0,0,0,0)
+    } else {
+      Peman <- c(-sample(0:1,1),0,0,0,0)
+    }
+    ######
+    Homeless <- c(-sample(2,1),0,sample(0:1,1),-sample(0:1,1),0)
+    Women <- c(0,sample(3,1),sample(2,1),sample(2,1),0)
+    Men <- c(0,-sample(2,1),0,sample(2,1),0)
+    Pregwomen <- c(0,1,0,0,0)
+    Infant <- c(0,-sample(2,1),0,0,0)
+    Obese <- c(0,0,sample(2,1),0,0)
+    criminal <- c(0,0,0,-sample(2,1),0)
+    Vwoman <- c(0,0,0,-sample(0:1,1),0)
+    if(Vwoman[4]==0){
+      Vman <- c(0,0,0,-sample(0:1,1),0)
+    }else{
+      Vman <- c(0,0,0,0,0)
+    }
+    alt <- c("Free Markets Party","Feminist Party","Social Welfare Party","Law and Order Party","Status Quo Party")
+    Cdata <- cbind(alt,Businessp,Homeless,Men,Women,Pregwomen,Infant,Obese,criminal,Vman,Vwoman,Peman,Pewoman,Paman,Pawoman)
+    Cdata <- data.table(Cdata)
+    Cdata$id <- rep(m,5)
+    HUN.ww <- rbind(HUN.ww,Cdata)
+  }
+  
+  
+  HUN.ww$Businessp<- as.numeric(HUN.ww$Businessp)
+  HUN.ww$Homeless <- as.numeric(HUN.ww$Homeless)
+  HUN.ww$Men <- as.numeric(HUN.ww$Men)
+  HUN.ww$Women <- as.numeric(HUN.ww$Women)
+  HUN.ww$Pregwomen <- as.numeric(HUN.ww$Pregwomen)
+  HUN.ww$Infant <- as.numeric(HUN.ww$Infant)
+  HUN.ww$Obese <- as.numeric(HUN.ww$Obese)
+  HUN.ww$criminal <- as.numeric(HUN.ww$criminal)
+  HUN.ww$Paman <- as.numeric(HUN.ww$Paman)
+  HUN.ww$Pawoman <- as.numeric(HUN.ww$Pawoman)
+  HUN.ww$Peman <- as.numeric(HUN.ww$Peman)
+  HUN.ww$Pewoman <- as.numeric(HUN.ww$Pewoman)
+  HUN.ww$Vman <- as.numeric(HUN.ww$Vman)
+  HUN.ww$Vwoman <- as.numeric(HUN.ww$Vwoman)
+  ############
+  HUN.ww<-HUN.ww[ HUN.betas, on=.(id)]
+  
+  ##########
+  setkey(HUN.ww,"id","alt")
+  ####################
+  b.names<-17:30
+  
+  # functions for calculating utility and probabilities
+  calcU<-function(dt,formula,names) {
+    U<-rowSums(model.matrix(formula,data=dt)*as.matrix(dt[,..b.names]))
+    return(U)
+  }
+  calcP<-function(x) { 
+    exp(x)/sum(exp(x))
+  }
+  
+  # Calculate utilities, probabilities, and make choices
+  HUN.ww[ , U:=calcU(HUN.ww,~Businessp+Homeless+Men+Women+Pregwomen+Infant+Obese+
+                   criminal+Vman+Vwoman+Peman+Pewoman+Paman+Pawoman-1,..b.names)
+      ][ , p:=calcP(U), by=.(id)
+         ][ , alt.choice:=sample(alt,size=1,prob=p), by=.(id)
+            ][, choice:=as.integer(alt==alt.choice)]
+  
+  HUN.share.p<- HUN.ww[ , .(Share.lc=sum(p), 
+            Share.obs=sum(choice)
+  ) , 
+  by=.(alt)
+  ][ , `:=`(Share.lc=Share.lc/sum(Share.lc),
+            Share.obs=Share.obs/sum(Share.obs)
+  )
+  ][1:5]
+  HUN.share <-rbind(HUN.share.p,HUN.share) 
+}
+# market shares for NZL based on LCM's probabilities
+summary(HUN.share[alt=="Feminist Party"]$Share.lc)
+sd(HUN.share[alt=="Feminist Party"]$Share.lc)
+summary(HUN.share[alt=="Free Markets Party"]$Share.lc)
+sd(HUN.share[alt=="Free Markets Party"]$Share.lc)
+summary(HUN.share[alt=="Law and Order Party"]$Share.lc)
+sd(HUN.share[alt=="Law and Order Party"]$Share.lc)
+summary(HUN.share[alt=="Social Welfare Party"]$Share.lc)
+sd(HUN.share[alt=="Social Welfare Party"]$Share.lc)
+summary(HUN.share[alt=="Status Quo Party"]$Share.lc)
+sd(HUN.share[alt=="Status Quo Party"]$Share.lc)
+
+#market share for NZL based on predicted outcomes
+summary(HUN.share[alt=="Feminist Party"]$Share.obs)
+sd(HUN.share[alt=="Feminist Party"]$Share.obs)
+summary(HUN.share[alt=="Free Markets Party"]$Share.obs)
+sd(HUN.share[alt=="Free Markets Party"]$Share.obs)
+summary(HUN.share[alt=="Law and Order Party"]$Share.obs)
+sd(HUN.share[alt=="Law and Order Party"]$Share.obs)
+summary(HUN.share[alt=="Social Welfare Party"]$Share.obs)
+sd(HUN.share[alt=="Social Welfare Party"]$Share.obs)
+summary(HUN.share[alt=="Status Quo Party"]$Share.obs)
+sd(HUN.share[alt=="Status Quo Party"]$Share.obs)
+
+HUN.share
+```
+
+## 4.Mass Polarization: A Preliminary Analysis
+Figure 3 shows individuals' political identities by classes in New Zealand and Hungary. These graphs are consistent with our assumptions about classes' political tendencies. In New Zealand's sample, we can find respondents in Class 1 prefer to choose "Free Markets Party", and respondents in Class 2 prefer to choose "Social Welfare Party". In Hungary, respondents in Classes 3 prefer to choose "Free Markets Party", and Class 1 and Class 2 have more mixed choices. However, these results do not present clear mass polarization. Figure 4 shows individuals' political views based on classes in New Zealand and Hungry. The results indicate there are no huge differences in political views between Class 1 and Class 2 in New Zealand. Overall, the political views between the three classes in Hungary do not have huge differences too. In particular, about 50% of respondents who are strongly conservative are at Class 1 in Hungary. Figure 5 shows individuals' political views by party identities in New Zealand and Hungary. The degree of overlap is big, which might indicate clear mass polarization does not exist in New Zealand and Hungary. We can find many people are centrists in these two countries.
+
+Therefore, in sum, we did not find clear mass polarization in New Zealand and Hungary. We do not have panel data to test political polarization, so we cannot claim the trend of mass polarization too. The political polarization in public might be a myth. However, self-selection bias may exist in these datasets, which will lead to biased estimation for mass polarization. In this article, H3 should be rejected.
+
+```{r}
+NZL.polarization <- ggplot(NZL.ww[choice==1],aes(NZLpoli,fill=alt))+geom_density(alpha=0.5)+
+  xlab("Political views(New Zealand)\n(Conservative to Progressive)")+
+  scale_fill_discrete(name="Political\nParty")
+
+NZL.class<- ggplot(NZL.ww[choice==1],aes(NZLclass,fill=alt.choice))+geom_bar()+scale_fill_discrete(name="Political\nParty")
+HUN.class <- ggplot(HUN.ww[choice==1],aes(HUNclass,fill=alt.choice))+geom_bar()+scale_fill_discrete(name="Political\nParty")
+
+HUN.polarization <- ggplot(HUN.ww[choice==1],aes(HUNpoli,fill=alt))+geom_density(alpha=0.5)+
+  xlab("Political views(Hungary)\n(Conservative to Progressive)")+
+  scale_fill_discrete(name="Political\nParty")
+
+NZL.poli<- ggplot(NZL.ww[choice==1],aes(NZLpoli,fill=factor(NZLclass)))+geom_density(position = "fill")+scale_fill_discrete(name="Class")+
+  xlab("Political views(New Zealand)")
+HUN.poli <- ggplot(HUN.ww[choice==1],aes(HUNpoli,fill=factor(HUNclass)))+geom_density(position = "fill")+
+  scale_fill_discrete(name="Class")+
+  xlab("Political views(Hungary)")
+grid.arrange(NZL.poli,HUN.poli)
+grid.arrange(NZL.polarization,HUN.polarization)
+grid.arrange(NZL.class,HUN.class,ncol=2)
+```
+
+# Conclusions
+We have demonstrated that (1) The Free Markets Party will win, and the Social Welfare Party will get the second highest votes in New Zealand. (2) The Free Markets Party will win in Hungary. (3) Clear mass polarization does not exist in New Zealand and Hungary. 
+
+	There are some limitations to this article. First, self-selection may exist, which will lead to incorrect estimation. Second, the LCM is not good and flexible enough because preference within each class is assumed as constant. Therefore, mixed-mixed logit model may be a better choice. Third, in sum, endogeneity is a big problem, especially if we want to claim causality.
+	
+	In summary, bearing these limitations in mind, our conclusions are plausible. In the future, we should collect panel data to test mass polarization more. What is more, if possible, we should focus more on testing macro-level functions (or rules), not just predict outcomes.
